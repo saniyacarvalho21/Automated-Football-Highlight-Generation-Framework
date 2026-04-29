@@ -1,0 +1,72 @@
+# ======================================
+# ⚽ Automated Football Highlight Framework
+# Configuration File
+# ======================================
+
+# -------------------------------
+# 🎬 Video Processing
+# -------------------------------
+video:
+  input_path: "data/input/match.mp4"
+  output_dir: "data/outputs/"
+  segment_dir: "data/segments/"
+  segment_duration: 5        # seconds per segment
+  fps: 25
+  resolution: "720p"
+
+# -------------------------------
+# 🧠 Scoring Weights
+# -------------------------------
+weights:
+  visual: 0.45
+  audio: 0.35
+  context: 0.20
+
+# -------------------------------
+# 📊 Visual Feature Settings
+# -------------------------------
+visual:
+  motion_threshold: 0.6       # threshold for high motion
+  use_object_detection: true
+  yolo_model: "yolov8n.pt"
+
+# -------------------------------
+# 🔊 Audio Feature Settings
+# -------------------------------
+audio:
+  sample_rate: 22050
+  use_energy: true
+  use_pitch: true
+  use_flux: true
+  energy_threshold: 0.5
+
+# -------------------------------
+# 🧩 Context Settings
+# -------------------------------
+context:
+  base_score: 0.2
+  smoothing_factor: 0.1
+
+# -------------------------------
+# 🎯 Highlight Selection
+# -------------------------------
+selection:
+  top_percentage: 0.3          # select top 30% segments
+  min_highlight_duration: 180  # seconds (3 min)
+  max_highlight_duration: 420  # seconds (7 min)
+  merge_adjacent: true
+
+# -------------------------------
+# 🎬 Output Settings
+# -------------------------------
+output:
+  filename: "highlight.mp4"
+  codec: "libx264"
+  audio_codec: "aac"
+
+# -------------------------------
+# ⚙️ System Settings
+# -------------------------------
+system:
+  random_seed: 42
+  log_level: "INFO"
