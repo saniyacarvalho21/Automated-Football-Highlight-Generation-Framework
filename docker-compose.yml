@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  # ===============================
+  # 🎬 Core Pipeline Service
+  # ===============================
+  pipeline:
+    build: .
+    container_name: highlight_pipeline
+    command: python run_pipeline.py
+    volumes:
+      - ./data:/app/data
+      - ./outputs:/app/data/outputs
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+
+  # ===============================
+  # 🌐 Streamlit App (UI)
+  # ===============================
+  app:
+    build: .
+    container_name: highlight_app
+    command: streamlit run app.py --server.port=8501 --server.address=0.0.0.0
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data
+      - ./outputs:/app/data/outputs
+    depends_on:
+      - pipeline
+    restart: unless-stopped
+
+  # ===============================
+  # 📦 Optional: Redis (future scaling)
+  # ===============================
+  redis:
+    image: redis:7-alpine
+    container_name: highlight_redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
